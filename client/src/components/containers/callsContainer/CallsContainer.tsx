@@ -1,15 +1,16 @@
 import './CallsContainer.scss';
 import { useState, useEffect } from 'react';
-import CallsForm from '../../layout/callsForm/CallsForm';
-import CallsList from '../../layout/callsList/CallsList';
 import type { Call } from '../../../types/call';
 import * as API from '../../../api/calls';
+import CallsFormWrapper from './CallsFormWrapper';
+import CallsListWrapper from './CallsListWrapper';
+import Pagination from './Pagination';
+import Stats from '../../layout/stats/Stats';
 
 const CallsContainer: React.FC = () => {
-  const [calls, setCalls] = useState<any[]>([]);
+  const [calls, setCalls] = useState<Call[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const pageLimit: number = 10
 
   const loadCalls = async (pageNumber = page) => {
     try {
@@ -22,43 +23,8 @@ const CallsContainer: React.FC = () => {
   };
 
   useEffect(() => {
-    loadCalls(page)
+    loadCalls(page);
   }, [page]);
-
-  const handleSaveCall = async (call: Call) => {
-    try {
-      await API.addCall(call);
-       if (calls.length >= pageLimit) {
-      setPage(totalPages + 1); 
-    } else {
-      loadCalls(page); 
-    }
-    } catch (err) {
-      console.error(err);
-      alert("Error adding call");
-    }
-  };
-
-  const handleDeleteCall = async (id: number | string) => {
-    try {
-      await API.deleteCall(id);
-      if (calls.length === 1 && page > 1) setPage(p => p - 1);
-      else loadCalls();
-    } catch (err) {
-      console.error(err);
-      alert("Error deleting call");
-    }
-  };
-
-  const handleUpdateCall = async (updatedCall: Call) => {
-    try {
-      await API.updateCall(updatedCall);
-      loadCalls();;
-    } catch (err) {
-      console.error(err);
-      alert("Error updating call");
-    }
-  };
 
   const goNext = () => setPage(p => Math.min(p + 1, totalPages));
   const goPrev = () => setPage(p => Math.max(p - 1, 1));
@@ -67,19 +33,17 @@ const CallsContainer: React.FC = () => {
     <div className="callsContainer">
       <div className="callsContainer__form">
         <h2>Add Call</h2>
-        <CallsForm onSave={handleSaveCall} />
+        <CallsFormWrapper onCallAdded={() => loadCalls(page)} />
       </div>
+
       <div className="callsContainer__list">
         <h2>Calls List</h2>
-        <CallsList calls={calls} onDelete={handleDeleteCall} onUpdate={handleUpdateCall} />
-        <div className="callsContainer__pagination">
-          <button onClick={goPrev} disabled={page === 1}>Prev</button>
-          <span>Page {page} of {totalPages}</span>
-          <button onClick={goNext} disabled={page === totalPages}>Next</button>
-        </div>
+        <CallsListWrapper calls={calls} reloadCalls={() => loadCalls(page)} />
+        <Pagination page={page} totalPages={totalPages} onPrev={goPrev} onNext={goNext} />
       </div>
+      <Stats />
     </div>
-  )
-}
+  );
+};
 
 export default CallsContainer;

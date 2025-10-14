@@ -4,13 +4,15 @@ import getById from "./getById.js";
 import create from "./create.js";
 import update from "./update.js";
 import remove from "./delete.js";
+import stats from "./stats.js";
 
 const router = Router();
 
-router.use("/", getAll);
-router.use("/", getById);
-router.use("/", create);
-router.use("/", update);
-router.use("/", remove);
+router.get("/", getAll);
+router.get("/stats", stats); 
+router.get("/:id", getById);
+router.post("/", create);
+router.put("/:id", update);
+router.delete("/:id", remove);
 
 export default router;

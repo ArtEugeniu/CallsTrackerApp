@@ -15,7 +15,7 @@ type Call = {
 type Props = {
   calls: Call[];
   onDelete: (id: number | string) => void;
-  onUpdate: (call: Call) => void; 
+  onUpdate: (call: Call) => void;
 };
 
 const CallsList: React.FC<Props> = ({ calls, onDelete, onUpdate }) => {
@@ -24,7 +24,10 @@ const CallsList: React.FC<Props> = ({ calls, onDelete, onUpdate }) => {
 
   const handleEditClick = (call: Call) => {
     setEditingId(call.id);
-    setEditData({ ...call });
+    setEditData({
+      ...call,
+      call_date: new Date(call.call_date).toISOString().slice(0, 16)
+    });
   };
 
   const handleChange = (field: keyof Call, value: any) => {
@@ -76,7 +79,7 @@ const CallsList: React.FC<Props> = ({ calls, onDelete, onUpdate }) => {
                 <td>
                   <input
                     type="datetime-local"
-                    value={new Date(editData.call_date!).toISOString().slice(0,16)}
+                    value={editData.call_date || ""}
                     onChange={e => handleChange("call_date", e.target.value)}
                   />
                 </td>

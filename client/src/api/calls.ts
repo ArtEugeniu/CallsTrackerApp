@@ -1,4 +1,4 @@
-import type { Call } from "../types/call";
+import type { Call, StatsData } from "../types/call";
 
 export const fetchCalls = async (page = 1, limit = 10): Promise<{
   calls: Call[];
@@ -34,4 +34,10 @@ export const updateCall = async (call: Call): Promise<Call> => {
 export const deleteCall = async (id: number | string): Promise<void> => {
   const res = await fetch(`/api/calls/${id}`, { method: "DELETE" });
   if (!res.ok) throw new Error("Failed to delete call");
+};
+
+export const fetchCallsStats = async (): Promise<StatsData> => {
+  const res = await fetch('/api/calls/stats');
+  if (!res.ok) throw new Error('Failed to fetch call stats');
+  return res.json();
 };
