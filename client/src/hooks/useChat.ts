@@ -25,7 +25,6 @@ export default function useChat() {
 
       const data = await res.json();
 
-      // Handle different response formats from server
       let responseText = "";
       if (data.response) {
         responseText = data.response;

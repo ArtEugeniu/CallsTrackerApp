@@ -115,12 +115,12 @@ export async function handleGetStats() {
 
     const statsList = [
       'Statistici apeluri:',
-      `📊 Total apeluri: ${stats.total_calls || 0}`,
-      `⏱️ Durata medie: ${stats.average_duration ? Math.round(stats.average_duration) : 0} secunde`,
-      `✅ Apeluri reușite: ${stats.successful_calls || 0}`,
-      `❌ Apeluri nereușite: ${stats.failed_calls || 0}`,
-      `📞 Cel mai lung apel: ${stats.longest_call || 0} secunde`,
-      `⚡ Cel mai scurt apel: ${stats.shortest_call || 0} secunde`
+      `Total apeluri: ${stats.total_calls || 0}`,
+      `Durata medie: ${stats.average_duration ? Math.round(stats.average_duration) : 0} secunde`,
+      `Apeluri reușite: ${stats.successful_calls || 0}`,
+      `Apeluri nereușite: ${stats.failed_calls || 0}`,
+      `Cel mai lung apel: ${stats.longest_call || 0} secunde`,
+      `Cel mai scurt apel: ${stats.shortest_call || 0} secunde`
     ];
 
     return statsList.join('. ');

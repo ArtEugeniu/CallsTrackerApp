@@ -1,0 +1,31 @@
+{
+  "name": "call-tracker-chatgpt",
+  "version": "1.0.0",
+  "description": "Call Tracker with ChatGPT Integration - Monorepo",
+  "scripts": {
+    "install:all": "npm install && cd client && npm install && cd ../server && npm install",
+    "build": "cd client && npm install && npm run build && mkdir -p ../server/public && cp -r dist/* ../server/public/ && cd ../server && npm install",
+    "start": "cd server && npm start",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "test": "cd server && npm test"
+  },
+  "keywords": [
+    "call-tracker",
+    "chatgpt",
+    "openai",
+    "react",
+    "express",
+    "sqlite"
+  ],
+  "author": "Bravin",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}
