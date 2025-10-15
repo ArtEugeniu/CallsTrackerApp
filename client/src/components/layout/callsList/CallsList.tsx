@@ -45,6 +45,13 @@ const CallsList: React.FC<Props> = ({ calls, onDelete, onUpdate }) => {
 
   if (calls.length === 0) return <p className="calls-list__empty">No calls yet.</p>;
 
+  // Sort calls by ID in ascending order
+  const sortedCalls = [...calls].sort((a, b) => {
+    const aId = typeof a.id === 'string' ? parseInt(a.id) : a.id;
+    const bId = typeof b.id === 'string' ? parseInt(b.id) : b.id;
+    return aId - bId;
+  });
+
   return (
     <table className="calls-list">
       <thead className="calls-list__head">
@@ -61,10 +68,11 @@ const CallsList: React.FC<Props> = ({ calls, onDelete, onUpdate }) => {
         </tr>
       </thead>
       <tbody className="calls-list__body">
-        {calls.map(call => (
+        {sortedCalls.map(call => (
           <tr key={call.id} className="calls-list__row">
             {editingId === call.id ? (
               <>
+              <td>{call.id}</td>
                 <td>
                   <input
                     value={editData.phone_number}
