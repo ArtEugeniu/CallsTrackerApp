@@ -18,3 +18,10 @@ export type StatsData = {
   avgDuration: number;
   totalDuration: number;
 };
+
+export type Role = "user" | "assistant";
+
+export interface Message {
+  role: Role;
+  content: string;
+}

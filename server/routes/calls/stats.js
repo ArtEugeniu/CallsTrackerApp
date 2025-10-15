@@ -15,13 +15,12 @@ router.get("/stats", async (req, res) => {
 
 
     const totalDurationSec = calls.reduce((acc, c) => {
-      if (!c.duration_seconds) return acc;
-      const [minutes, seconds] = c.duration_seconds.split(":").map(Number);
-      if (isNaN(minutes) || isNaN(seconds)) return acc;
+      if (!c.duration_seconds || typeof c.duration_seconds !== "string") return acc;
+      const parts = c.duration_seconds.split(":").map(Number);
+      if (parts.length !== 2 || parts.some(isNaN)) return acc;
+      const [minutes, seconds] = parts;
       return acc + minutes * 60 + seconds;
     }, 0);
-
-    const avgDurationSec = total > 0 ? Math.round(totalDurationSec / total) : 0;
 
     const formatMMSS = (seconds) => {
       const m = Math.floor(seconds / 60);
@@ -29,6 +28,7 @@ router.get("/stats", async (req, res) => {
       return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
     };
 
+    const avgDurationSec = total > 0 ? Math.round(totalDurationSec / total) : 0;
     const avgDuration = formatMMSS(avgDurationSec);
     const totalDuration = formatMMSS(totalDurationSec);
 

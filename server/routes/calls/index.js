@@ -6,6 +6,7 @@ import update from "./update.js";
 import remove from "./delete.js";
 import stats from "./stats.js";
 
+
 const router = Router();
 
 router.get("/", getAll);

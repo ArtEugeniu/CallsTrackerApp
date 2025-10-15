@@ -1,0 +1,17 @@
+.message {
+  margin-bottom: 10px;
+
+  &.user {
+    color: #333;
+  }
+
+  &.assistant {
+    color: #0066cc;
+  }
+
+  pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+}
