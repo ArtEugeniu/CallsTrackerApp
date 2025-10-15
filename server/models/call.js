@@ -69,3 +69,42 @@ export const deleteCall = async (id) => {
   const db = await dbPromise;
   await db.run("DELETE FROM calls WHERE id = ?", [id]);
 };
+
+export const getStats = async () => {
+  const db = await dbPromise;
+  
+  const calls = await getAllCalls();
+  
+  if (!calls || calls.length === 0) {
+    return {
+      total_calls: 0,
+      average_duration: 0,
+      successful_calls: 0,
+      failed_calls: 0,
+      longest_call: 0,
+      shortest_call: 0
+    };
+  }
+
+  const durations = calls
+    .map(call => {
+      if (typeof call.duration_seconds === 'string' && call.duration_seconds.includes(':')) {
+        const [minutes, seconds] = call.duration_seconds.split(':').map(Number);
+        return minutes * 60 + seconds;
+      }
+      return parseInt(call.duration_seconds) || 0;
+    })
+    .filter(duration => duration > 0);
+
+  const successful = calls.filter(c => c.status === 'completed' || c.outcome === 'qualified').length;
+  const failed = calls.filter(c => c.status === 'missed' || c.status === 'failed').length;
+
+  return {
+    total_calls: calls.length,
+    average_duration: durations.length > 0 ? durations.reduce((a, b) => a + b, 0) / durations.length : 0,
+    successful_calls: successful,
+    failed_calls: failed,
+    longest_call: durations.length > 0 ? Math.max(...durations) : 0,
+    shortest_call: durations.length > 0 ? Math.min(...durations) : 0
+  };
+};
