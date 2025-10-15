@@ -34,7 +34,7 @@ const [notes, setNotes] = useState<string>("");
       updated_at: new Date(),
     });
 
-    // setPhone(""); setName(""); setDate(""); setDuration('00:00'); setStatus("completed"); setOutcome("qualified"); setNotes("");
+    setPhone(""); setName(""); setDate(""); setDuration('00:00'); setStatus("completed"); setOutcome("qualified"); setNotes("");
   };
 
   return (

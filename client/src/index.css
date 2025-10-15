@@ -66,3 +66,13 @@ button:focus-visible {
   max-width: 1200px;
   margin: 0 auto;
 }
+
+.main-content {
+  padding: 20px;
+  min-height: calc(100vh - 80px);
+}
+
+.chat-section {
+  margin-top: 40px;
+  padding: 20px 0;
+}

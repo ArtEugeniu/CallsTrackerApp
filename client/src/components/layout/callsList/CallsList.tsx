@@ -49,6 +49,7 @@ const CallsList: React.FC<Props> = ({ calls, onDelete, onUpdate }) => {
     <table className="calls-list">
       <thead className="calls-list__head">
         <tr>
+          <th>Id</th>
           <th>Phone</th>
           <th>Name</th>
           <th>Date</th>
@@ -124,6 +125,7 @@ const CallsList: React.FC<Props> = ({ calls, onDelete, onUpdate }) => {
               </>
             ) : (
               <>
+                <td>{call.id}</td>
                 <td>{call.phone_number}</td>
                 <td>{call.contact_name}</td>
                 <td>{new Date(call.call_date).toLocaleString()}</td>

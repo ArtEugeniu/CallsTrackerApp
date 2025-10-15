@@ -19,10 +19,33 @@ export default function useChat() {
         body: JSON.stringify({ message: text }),
       });
 
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
+
       const data = await res.json();
 
-      const gptReply = data.reply || data.calls || data.stats || "No response";
-      const assistantMessage: Message = { role: "assistant", content: JSON.stringify(gptReply, null, 2) };
+      // Handle different response formats from server
+      let responseText = "";
+      if (data.response) {
+        responseText = data.response;
+      } else if (data.reply) {
+        responseText = data.reply;
+      } else if (data.calls) {
+        responseText = Array.isArray(data.calls) ? 
+          `Found ${data.calls.length} calls` : 
+          JSON.stringify(data.calls, null, 2);
+      } else if (data.stats) {
+        responseText = typeof data.stats === 'string' ? 
+          data.stats : 
+          JSON.stringify(data.stats, null, 2);
+      } else if (data.error) {
+        responseText = `Error: ${data.error}`;
+      } else {
+        responseText = "No response received";
+      }
+
+      const assistantMessage: Message = { role: "assistant", content: responseText };
       setMessages(prev => [...prev, assistantMessage]);
     } catch (err) {
       console.error(err);
